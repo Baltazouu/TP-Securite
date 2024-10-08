@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+
 """
 Generate two PDFs with different contents but identical SHA1 hashes.
 
@@ -6,7 +6,7 @@ PDFs are rendered into JPGs and merged into the output file. They must have the 
 
 Requires ghostscript, turbojpeg, and PIL.
 
-atUses the "shattered" PDF prologue from shtered.io - credit to Marc Stevens et al. for the collision.
+Uses the "shattered" PDF prologue from shattered.io - credit to Marc Stevens et al. for the collision.
 """
 
 from hashlib import sha1, sha256
@@ -321,12 +321,15 @@ def make_pdf ( filename, text ) :
 
 
 
-logger.info("Insert the string wish to collide(hex):")
+
+logger.info("Insert any string wish to collide(hex):")
 query = input()
 logger.info("string wish to query: %s" % query)
 
-stringA = input("Entrez une string pour le PDF A: ")
-stringB = input("Entrez une string pour le PDF B: ")
+# stringA = "eopXDeopXD"
+# stringB = "sunnykuo0629"
+stringA = input("Entre")
+
 make_pdf("A.pdf",stringA)
 make_pdf("B.pdf",stringB)
 
@@ -334,56 +337,14 @@ main("A.pdf","B.pdf")
 
 fileA = open("out-A.pdf","rb")
 dataA = fileA.read(320)
-#dataA = str(int(dataA,16))
+
 dataA = dataA.decode("latin-1")
 fileA.close()
 fileB = open("out-B.pdf","rb")
 dataB = fileB.read(320)
-#dataB = str(int(dataB,16))
+
 dataB = dataB.decode("latin-1")
 fileB.close()
 
 
 
-test2 = sha1()
-test2.update(dataB.encode("latin-1"))
-test2h = hexlify(test2.digest()).decode("utf-8")
-logger.debug("SHA1 of B")
-logger.debug("%s" % test2h)
-
-
-n = 1
-while 1 :
-    curr_string = dataA + str(n)
-    shaitup = sha1()
-    shaitup.update(curr_string.encode("latin-1"))
-    hashA = hexlify(shaitup.digest()).decode("utf-8")
-    hashA = hashA[-len(query):]
-#    logger.debug("%s" % hashA)
-    if hashA == query:
-        break
-    n = n + 1
-
-x = dataA + str(n)
-y = dataB + str(n)
-
-#collision text in hexademical representation
-logger.info ("x and y that collides")
-logger.info ("x = %s" % hexlify(x.encode("latin-1")).decode("latin-1"))
-logger.info ("y = %s" % hexlify(y.encode("latin-1")).decode("latin-1"))
-
-checkA = sha1()
-checkA.update(x.encode("latin-1"))
-hashX = hexlify(checkA.digest()).decode("latin-1")
-
-checkB = sha1()
-checkB.update(y.encode("latin-1"))
-hashY = hexlify(checkB.digest()).decode("latin-1")
-
-#hash(x) hash(y)
-logger.info ("SHA1 of x and y")
-logger.info ("SHA1(x) = %s" % hashX)
-logger.info ("SHA1(y) = %s" % hashY)
-
-
-checkA = sha1()
