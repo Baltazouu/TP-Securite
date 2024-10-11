@@ -326,9 +326,8 @@ logger.info("Insert any string wish to collide(hex):")
 query = input()
 logger.info("string wish to query: %s" % query)
 
-# stringA = "eopXDeopXD"
-# stringB = "sunnykuo0629"
-stringA = input("Entre")
+stringA = "eopXDeopXD"
+stringB = "sunnykuo0629"
 
 make_pdf("A.pdf",stringA)
 make_pdf("B.pdf",stringB)
